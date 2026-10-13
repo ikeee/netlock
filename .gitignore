@@ -2,5 +2,6 @@ bin/
 obj/
 dist/
 release/
+src/NetLock.Installer/payload.zip
 *.user
 .vs/

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>NetLock.Setup</RootNamespace>
+    <AssemblyName>NetLock-Student-Setup</AssemblyName>
+    <ApplicationIcon>..\Assets\student-red.ico</ApplicationIcon>
+    <DefineConstants>$(DefineConstants);ROLE_STUDENT</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\NetLock.Installer\*.cs" />
+    <EmbeddedResource Include="..\NetLock.Installer\payload.zip" LogicalName="payload.zip" Condition="Exists('..\NetLock.Installer\payload.zip')" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetLock.Shared\NetLock.Shared.csproj" />
+  </ItemGroup>
+</Project>

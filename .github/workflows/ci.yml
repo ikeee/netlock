@@ -32,3 +32,8 @@ jobs:
       - name: 端到端冒烟
         shell: pwsh
         run: ./scripts/e2e-test.ps1 -SkipBuild -Port 8293
+
+      # 双端安装包：把 dist 内嵌进安装器，并对每个安装包跑 --selftest（解压+校验内嵌程序包）
+      - name: 打安装包并自检
+        shell: pwsh
+        run: ./scripts/build-installer.ps1 -SkipBuild

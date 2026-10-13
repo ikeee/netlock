@@ -31,12 +31,31 @@
 
 ## 快速部署
 
-### 教师机（约 2 分钟）
+### 方式一：双击安装包（推荐，老师用这个）
+
+| 机器 | 安装包 | 说明 |
+|---|---|---|
+| 教师机 | `NetLock-Teacher-Setup-v0.1.1.exe`（黑底图标） | 右键 → 以管理员身份运行 → 点「开始安装」：拷程序、放行 `http://+:8210/` 与防火墙、建登录自启 |
+| 学生机 | `NetLock-Student-Setup-v0.1.1.exe`（红底图标） | 右键 → 以管理员身份运行 → 选教师机导出的**配对文件** → 点「开始安装」：注册服务 + 遮罩任务 + 权限 + 配对 |
+
+**50 台批量（无人值守）**：
+
+```bat
+NetLock-Student-Setup-v0.1.1.exe --silent --role student --pair D:\netlock-pairing.json
+NetLock-Teacher-Setup-v0.1.1.exe  --silent --role teacher --port 8210
+```
+
+安装包是**单文件**（把程序包内嵌在里面，约 290 KB），运行时解压到临时目录再调对应 exe 的 `--install`；
+`*.exe --selftest` 可以自己验证"内嵌程序包完整"。
+
+### 方式二：命令行脚本（不改动安装包时更灵活）
 
 ```powershell
-# 开发机：构建
+# 开发机：构建（产物进 dist\）
 powershell -File scripts\build.ps1
-# 把 dist\ 拷到教师机，然后在那台机上（管理员）：
+# 开发机：打两个安装包（产物进 release\，并自检内嵌程序包）
+powershell -File scripts\build-installer.ps1 -SkipBuild
+# 教师机（把 dist\ 拷过去，然后管理员运行）：
 powershell -ExecutionPolicy Bypass -File install-teacher.ps1
 ```
 

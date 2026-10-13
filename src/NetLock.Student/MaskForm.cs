@@ -29,6 +29,7 @@ namespace NetLock.Student
             _key = key;
             _passwordHash = passwordHash ?? "";
             FormBorderStyle = FormBorderStyle.None;
+            Icon = AppIcon.Get();
             StartPosition = FormStartPosition.Manual;
             Bounds = SystemInformation.VirtualScreen;      // 一个窗体盖住所有显示器
             TopMost = true;

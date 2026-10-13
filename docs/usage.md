@@ -3,12 +3,12 @@
 ## 一、部署顺序（照这个来，别跳）
 
 ```text
-1) 教师机（管理员）：
-   powershell -ExecutionPolicy Bypass -File install-teacher.ps1
+1) 教师机（管理员）：双击 NetLock-Teacher-Setup-*.exe → 开始安装
+   （命令行等价：powershell -ExecutionPolicy Bypass -File install-teacher.ps1）
    托盘 → 打开设置 → 勾「拔网线显示遮罩」+ 填 DNS + **设置解遮罩口令** → 保存并下发
    →「导出配对文件…」→ netlock-pairing.json（拷到 U 盘）
-2) 每台学生机（管理员）：
-   powershell -ExecutionPolicy Bypass -File install-student.ps1 -Pair D:\netlock-pairing.json
+2) 每台学生机（管理员）：双击 NetLock-Student-Setup-*.exe → 选配对文件 → 开始安装
+   （批量无人值守：NetLock-Student-Setup-v*.exe --silent --role student --pair D:\netlock-pairing.json）
 3) 核对（任一台学生机）：
    NetLock.Student.exe --status
    → 「已配对 = True」且指纹 = 教师机上显示的密钥指纹；「已应用版本」应等于教师端当前的 version

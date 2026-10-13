@@ -25,6 +25,10 @@ namespace NetLock.Teacher
             if (!string.IsNullOrWhiteSpace(dataDir)) TeacherState.DirOverride = Path.GetFullPath(dataDir);
             State = TeacherState.LoadOrCreate();
 
+            // 教师机部署（安装包 / 脚本都调它，保证只有一份实现）
+            if (Has(args, "--install")) { Environment.ExitCode = Install.Run(State.Port, Has(args, "--silent")); return; }
+            if (Has(args, "--uninstall")) { Environment.ExitCode = Install.Uninstall(State.Port); return; }
+
             // 无界面模式（给脚本/无人值守用）：--headless [--mask-on 1|0] [--dns "1.1.1.1,8.8.8.8"]
             //   [--mask-password xxx] [--port 8210] [--no-save] [--export-pairing f.json]
             //   [--print-state] [--seconds N]
@@ -127,7 +131,7 @@ namespace NetLock.Teacher
 
             _tray = new NotifyIcon
             {
-                Icon = SystemIcons.Application,
+                Icon = AppIcon.Get(),
                 Visible = true,
                 ContextMenuStrip = menu,
             };

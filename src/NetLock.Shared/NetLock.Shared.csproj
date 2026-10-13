@@ -9,5 +9,6 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
 </Project>

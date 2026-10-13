@@ -5,6 +5,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <RootNamespace>NetLock.Student</RootNamespace>
     <AssemblyName>NetLock.Student</AssemblyName>
+    <ApplicationIcon>..\Assets\student-red.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
