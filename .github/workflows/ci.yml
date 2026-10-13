@@ -15,6 +15,13 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      # 图标闸门（build.ps1 会跑）需要 Pillow：从源图重算 256 帧与 .ico 逐字节比对
+      - name: 安装图标检查依赖
+        shell: pwsh
+        run: |
+          python -m pip install --quiet --disable-pip-version-check Pillow
+          if (Get-Command py -ErrorAction SilentlyContinue) { py -3 -m pip install --quiet --disable-pip-version-check Pillow }
+
       # 敏感文件检查：密钥/配对文件/产物一律不入库
       - name: 敏感文件检查
         shell: pwsh

@@ -44,4 +44,9 @@ Copy-Item -Path (Join-Path $root 'scripts\*') -Destination $dist -Force
 Copy-Item -LiteralPath (Join-Path $root 'docs') -Destination $dist -Recurse -Force
 Copy-Item -LiteralPath (Join-Path $root 'README.md') -Destination $dist -Force
 Get-ChildItem -LiteralPath $dist | Select-Object Name, Length | Format-Table -AutoSize | Out-String | Write-Host
+
+Write-Host '== 图标闸门 ==' -ForegroundColor Cyan
+& (Join-Path $PSScriptRoot 'check-icons.ps1') -Dist $dist
+if ($LASTEXITCODE -ne 0) { throw '图标检查失败（见上）' }
+
 Write-Host ('完成 → ' + $dist) -ForegroundColor Green

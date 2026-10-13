@@ -5,6 +5,6 @@ namespace NetLock.Shared
     {
         public const string ProductName = "NetLock";
         public const string ProductNameZh = "断网遮罩 / DNS 统管";
-        public const string Version = "0.1.2";
+        public const string Version = "0.1.3";
     }
 }

@@ -35,14 +35,16 @@
 
 | 机器 | 安装包 | 说明 |
 |---|---|---|
-| 教师机 | `NetLock-Teacher-Setup-v0.1.1.exe`（黑底图标） | 右键 → 以管理员身份运行 → 点「开始安装」：拷程序、放行 `http://+:8210/` 与防火墙、建登录自启 |
-| 学生机 | `NetLock-Student-Setup-v0.1.1.exe`（红底图标） | 右键 → 以管理员身份运行 → 选教师机导出的**配对文件** → 点「开始安装」：注册服务 + 遮罩任务 + 权限 + 配对 |
+| 教师机 | `NetLock-Teacher-Setup-v*.exe`（黑底图标） | 右键 → 以管理员身份运行 → 点「开始安装」：拷程序、放行 `http://+:8210/` 与防火墙、建登录自启 |
+| 学生机 | `NetLock-Student-Setup-v*.exe`（红底图标） | 右键 → 以管理员身份运行 → 选教师机导出的**配对文件** → 点「开始安装」：注册服务 + 遮罩任务 + 权限 + 配对 |
+
+> 版本号以 [CHANGELOG.md](CHANGELOG.md) 为准，安装包文件名里的 `v*` 就是当前版本（`release\` 里通常只留最新版）。
 
 **50 台批量（无人值守）**：
 
 ```bat
-NetLock-Student-Setup-v0.1.1.exe --silent --role student --pair D:\netlock-pairing.json
-NetLock-Teacher-Setup-v0.1.1.exe  --silent --role teacher --port 8210
+NetLock-Student-Setup-v*.exe --silent --role student --pair D:\netlock-pairing.json
+NetLock-Teacher-Setup-v*.exe  --silent --role teacher --port 8210
 ```
 
 安装包是**单文件**（把程序包内嵌在里面，约 290 KB），运行时解压到临时目录再调对应 exe 的 `--install`；
@@ -110,13 +112,17 @@ powershell -ExecutionPolicy Bypass -File install-student.ps1 -Pair D:\netlock-pa
 ## 开发
 
 ```powershell
-powershell -File scripts\build.ps1        # 构建 + 自检（39 项纯逻辑断言）+ 产物进 dist\
+powershell -File scripts\build.ps1        # 构建 + 自检（39 项纯逻辑断言）+ 图标闸门 + 产物进 dist\
 powershell -File scripts\e2e-test.ps1     # 端到端：真教师端 + 真学生端（沙箱数据目录）11 项断言
-powershell -File scripts\build-installer.ps1 -SkipBuild   # 打两个安装包到 release\（并自检内嵌程序包）
+powershell -File scripts\build-installer.ps1 -SkipBuild   # 打两个安装包到 release\（并自检内嵌程序包 + 图标闸门）
 
 # 换图标（人物像素一个都不动，只改底色）：
 py -3 _tools\make_app_icon.py --bg "#000000" --out src\Assets\teacher-black.ico   # 教师端：黑底
 py -3 _tools\make_app_icon.py --bg "#C62828" --out src\Assets\student-red.ico   # 学生端：红底
+# 换完必须过闸门（构建/CI 也会跑）：帧尺寸、四角底色、从源图重算逐字节比对、exe 自带图标
+powershell -File scripts\check-icons.ps1 -IncludeRelease
 ```
+
+> 图标深检需要 **Pillow**（`py -3 -m pip install Pillow`）；缺了会**直接报错**，不会静默跳过。
 
 协议与实现细节见 [docs/protocol.md](docs/protocol.md)；现场使用与排障见 [docs/usage.md](docs/usage.md)。

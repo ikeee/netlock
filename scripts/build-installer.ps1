@@ -50,6 +50,10 @@ foreach ($p in $pairs) {
     & $dst --selftest
     if ($LASTEXITCODE -ne 0) { throw ('安装包自检失败：' + $f.Name) }
 }
+Write-Host '== 图标闸门（含两个安装包）==' -ForegroundColor Cyan
+& (Join-Path $PSScriptRoot 'check-icons.ps1') -IncludeRelease
+if ($LASTEXITCODE -ne 0) { throw '图标检查失败（见上）' }
+
 Write-Host ''
 Write-Host ('完成：安装包在 ' + $release) -ForegroundColor Green
 Write-Host '  教师机：右键以管理员身份运行 NetLock-Teacher-Setup-*.exe'
