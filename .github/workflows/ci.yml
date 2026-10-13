@@ -1,0 +1,34 @@
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # 敏感文件检查：密钥/配对文件/产物一律不入库
+      - name: 敏感文件检查
+        shell: pwsh
+        run: |
+          $bad = git ls-files | Where-Object { $_ -match '(?i)(server-key|pairing.*\.json$|\.envelope$|\.pfx$|\.snk$)|^dist/|^release/' }
+          if ($bad) { Write-Host "禁止提交的文件被 Git 跟踪："; $bad | ForEach-Object { Write-Host "  $_" }; exit 1 }
+          Write-Host "敏感文件检查通过"
+
+      # 构建 + 自检（纯逻辑断言）
+      - name: 构建 + 自检
+        shell: pwsh
+        run: ./scripts/build.ps1
+
+      # 端到端：真教师端 + 真学生端（沙箱数据目录，不碰真机 %ProgramData%）
+      - name: 端到端冒烟
+        shell: pwsh
+        run: ./scripts/e2e-test.ps1 -SkipBuild -Port 8293
