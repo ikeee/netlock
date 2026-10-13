@@ -27,6 +27,10 @@ if (-not $NoSelfTest) {
     if ($LASTEXITCODE -ne 0) { throw '自检失败' }
 }
 
+Write-Host '== 红线检查 ==' -ForegroundColor Cyan
+& (Join-Path $PSScriptRoot 'check-redlines.ps1')
+if ($LASTEXITCODE -ne 0) { throw '红线检查失败（见上）' }
+
 Write-Host '== 整理产物 ==' -ForegroundColor Cyan
 [IO.Directory]::CreateDirectory($dist) | Out-Null
 foreach ($proj in @('NetLock.Teacher', 'NetLock.Student')) {

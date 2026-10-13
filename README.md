@@ -67,7 +67,26 @@ powershell -ExecutionPolicy Bypass -File install-student.ps1 -Pair D:\netlock-pa
 - **不锁键鼠**：遮罩靠"全屏 + 每 500ms 置顶"占住屏幕，学生按 Win 键仍能切走。老版本的 `BlockInput` 需要更高权限且容易被杀，这一版不做。
 - **不防拆**：学生可以停服务/杀进程（下次开机服务会自启）。
 - **不记屏幕/不远程控制**：本项目永久不做远程桌面、屏幕监控、截屏录屏、文件传输、聊天。
-- **不改无线网卡**：只认有线（拔网线才是判据）。**蓝牙 PAN 在 Windows 里被归类成 Ethernet**，已按描述关键字排除（否则只有 WiFi 的机器会误弹遮罩）。
+- **不屏蔽 USB**：**一条 USB 相关代码都没有**（学生机要用 USB WiFi 做热点给机器人连；机器人/串口/键鼠同理）。
+  完整版 LabGuard 有 USB 存储管控开关，本项目故意不做。
+- **不改 / 不还原 IP 与网关**：只"判断网 + 写 DNS"，**绝不**做"检测到 IP 被改就还原" —— 那会打断 ICS/移动热点/机器人连接。
+  也**不禁用网卡**（禁用 USB WiFi 热点就废了）。
+- **不去动无线/蓝牙网卡**：只认有线（拔网线才是判据），DNS 也只写有线网卡。
+  **蓝牙 PAN 在 Windows 里被归类成 Ethernet**，已按描述关键字排除（否则只有 WiFi 的机器会误弹遮罩）。
+
+> 上面这几条**不是口头承诺**：`scripts\check-redlines.ps1` 会扫源码把它们钉住（构建/CI 都会跑）。
+> 谁（人或 AI）以后想把它们加回来，构建直接失败，必须显式修改那份清单 —— 也就是**一次有意识的决定**。
+
+### 红线清单（`scripts/check-redlines.ps1`）
+
+| 红线 | 判据（扫源码） |
+|---|---|
+| 不屏蔽 USB 存储 | `usbstor` / `RemovableStorageDevices` / `AllowStorage` / `UsbGuard` |
+| 不还原/设置 IP 与网关 | `interface ip set address` / `RestoreOriginalIp` |
+| 不禁用网卡 | `netsh interface set interface` / `Disable-NetAdapter` |
+| 不操作别人的服务 | `sc.exe stop/start/delete`（只允许操作 `NetLockSvc`） |
+| 不写注册表 | `Registry.LocalMachine` / `CreateSubKey` |
+| 不动无线/蓝牙 | `WlanSvc` / `netsh wlan` |
 
 ## 开发
 
