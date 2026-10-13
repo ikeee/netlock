@@ -1,5 +1,21 @@
 # 更新记录
 
+## v0.1.2（2026-10-13 · 换新头像做图标）
+
+- 按用户给的新头像（`则卷千兵卫-removebg-preview副本.png`，249×349 透明底）重做两个图标：
+  **教师端黑底 `#000000`** / **学生端红底 `#C62828`**，只改底色、**人物像素一个都不动**。
+- 生成脚本入库：`_tools/make_app_icon.py`（透明底模式：垫底色 + alpha 合成羽化边；源图入库 `src/Assets/avatar-source.png`）；
+  重新生成命令：
+  ```bat
+  py -3 _tools\make_app_icon.py --bg "#000000" --out src\Assets\teacher-black.ico
+  py -3 _tools\make_app_icon.py --bg "#C62828" --out src\Assets\student-red.ico
+  ```
+- **校验是硬的**（不靠肉眼）：7 个尺寸帧（16…256）、四角=精确底色；
+  另外用 Python 从**源图**按生成规则重算 256 帧，与图标**逐字节比对 → 0 处差异**（= 人物原样）。
+- 四个 exe 的图标都已核对：`NetLock.Teacher.exe` / `NetLock-Teacher-Setup` = 黑底；
+  `NetLock.Student.exe` / `NetLock-Student-Setup` = 红底（左上角像素精确匹配，中心都是同一人物像素）。
+- 版本 0.1.1 → **0.1.2**。
+
 ## v0.1.1（2026-10-13 · 双端一键安装包 + 图标）
 
 - **两个安装包 exe（单文件，约 290 KB）**：

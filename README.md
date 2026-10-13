@@ -112,6 +112,11 @@ powershell -ExecutionPolicy Bypass -File install-student.ps1 -Pair D:\netlock-pa
 ```powershell
 powershell -File scripts\build.ps1        # 构建 + 自检（39 项纯逻辑断言）+ 产物进 dist\
 powershell -File scripts\e2e-test.ps1     # 端到端：真教师端 + 真学生端（沙箱数据目录）11 项断言
+powershell -File scripts\build-installer.ps1 -SkipBuild   # 打两个安装包到 release\（并自检内嵌程序包）
+
+# 换图标（人物像素一个都不动，只改底色）：
+py -3 _tools\make_app_icon.py --bg "#000000" --out src\Assets\teacher-black.ico   # 教师端：黑底
+py -3 _tools\make_app_icon.py --bg "#C62828" --out src\Assets\student-red.ico   # 学生端：红底
 ```
 
 协议与实现细节见 [docs/protocol.md](docs/protocol.md)；现场使用与排障见 [docs/usage.md](docs/usage.md)。
