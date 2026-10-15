@@ -126,3 +126,10 @@ powershell -File scripts\check-icons.ps1 -IncludeRelease
 > 图标深检需要 **Pillow**（`py -3 -m pip install Pillow`）；缺了会**直接报错**，不会静默跳过。
 
 协议与实现细节见 [docs/protocol.md](docs/protocol.md)；现场使用与排障见 [docs/usage.md](docs/usage.md)。
+
+## 许可证与素材
+
+- **代码 MIT**（见 [LICENSE](LICENSE)）：拿去用、改、再分发都行；自担风险，不提供任何担保。
+- **头像是例外**：`src/Assets/avatar-source.png` 及由它生成的 `*.ico` 是**作者的个人头像**（不是本项目原创素材），
+  **不在 MIT 覆盖范围内**，请不要把它当成可自由取用的素材——要换图标就用你自己的图（见上面「换图标」，一条命令可复现）。
+- 仓库里**不含**任何学校/机构名称，也不含真实密钥或配对文件（配对文件带连接密钥，已进 `.gitignore`，CI 另有敏感文件检查把关）。

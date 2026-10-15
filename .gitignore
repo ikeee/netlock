@@ -5,3 +5,9 @@ release/
 src/NetLock.Installer/payload.zip
 *.user
 .vs/
+
+# 凭据类：配对文件里带着**连接密钥**，导出时若落在仓库目录里绝不能入库
+netlock-pairing*.json
+pairing*.json
+*.envelope
+*server-key*
